@@ -17,11 +17,11 @@ const users = ["Sara", "Mike", "James", "David", "Emily"];
 //     }
 //     insertQuery.finalize();
 // }
-
+let message = ''
 function accessData(){
-    db.each("SELECT * FROM mytable", function(err, results) {
+    db.get("SELECT id, name FROM mytable", function(err, results) {
         // if (error) return console.log(err.message);
-        console.log(results);
+        message = JSON.stringify(results)
     });
 }
 
@@ -42,7 +42,7 @@ db.serialize(function() {
 db.close();
 
 const PORT = process.env.port || 3002;
-const message = accessData();
+// const message = accessData();
 const app = express();
 
 

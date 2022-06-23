@@ -18,9 +18,10 @@ const users = ["Sara", "Mike", "James", "David", "Emily"];
 //     insertQuery.finalize();
 // }
 let message = ''
-function accessData(){
-    db.get("SELECT id, name FROM mytable", function(err, results) {
-        // if (error) return console.log(err.message);
+function accessData() {
+    db.all("SELECT * FROM mytable", function(error, results) {
+        if (error) return console.log(err.message);
+        console.log(results[0])
         message = JSON.stringify(results)
     });
 }

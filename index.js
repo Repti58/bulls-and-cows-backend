@@ -61,7 +61,7 @@ app.listen(PORT, () => {
 })
 
 app.get('/api', (req, res) => {
-
+    accessData();
     res.json(message)
 })
 

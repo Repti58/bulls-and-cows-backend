@@ -5,13 +5,14 @@ const cors = require('cors');
 var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('db.db');
 
-const steps = [5];
+
 
 const sql = 'INSERT INTO mytable (date, steps) VALUES(?,?)';
 
 function insertData(data) {
     db.run(sql, ['26.02.2022', data]);
     console.log("Data inserted successfully...");
+    accessData();
 }
 
 // for (var i = 0; i < users.length; i++) {

@@ -7,10 +7,10 @@ var db = new sqlite3.Database('db.db');
 
 
 
-const sql = 'INSERT INTO mytable (date, steps) VALUES(?,?)';
+const sql = 'INSERT INTO mytable (date, difficulty, steps) VALUES(?,?,?)';
 
 function insertData(data) {
-    db.run(sql, ['26.02.2022', data]);
+    db.run(sql, [data.date, data.difficulty, data.number]);
     console.log("Data inserted successfully...");
     accessData();
 }
@@ -27,7 +27,7 @@ function accessData() {
         console.log(results)
         message = results
 
-    });
+    }); 
 }
 
 // function deleteData(name){
@@ -70,5 +70,5 @@ app.post('/api', (req, res) => {
     console.log(data)
     // res.send('Data inserted successfully...') 
     res.status(201).json(data.number)
-    insertData(data.number)
+    insertData(data)
 })

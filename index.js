@@ -35,6 +35,15 @@ function accessData() {
     }); 
 }
 
+
+function accessDataBestResults() {
+    db.all("SELECT * FROM mytable WHERE difficulty = 5 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 5)", function (error, results) {
+        if (error) return console.log(error.message);
+        console.log(results)
+        message = results
+    });
+}
+
 // function deleteData(name){
 //     db.run("DELETE FROM mytable WHERE name=?",name, err =>{
 //         if (err) return console.log(err.message);
@@ -46,6 +55,7 @@ db.serialize(function () {
     // db.run("CREATE TABLE IF NOT EXISTS mytable (_ID INTEGER PRIMARY KEY AUTOINCREMENT, date, difficulty, steps)");
     // insertData();
     accessData();
+    accessDataBestResults()
     // deleteData("James");
 }); 
 
@@ -69,6 +79,13 @@ app.get('/api', (req, res) => {
     accessData();
     res.json(message)
 })
+
+app.get('/api_best_results', (req, res) => {
+    accessDataBestResults();
+    res.json(message)
+})
+
+
 
 app.post('/api', (req, res) => {
     data = req.body

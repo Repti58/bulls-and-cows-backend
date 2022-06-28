@@ -37,11 +37,32 @@ function accessData() {
 
 
 function accessDataBestResults() {
+const bestResults = [];
+
+    db.all("SELECT * FROM mytable WHERE difficulty = 3 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 3)", function (error, results) {
+        if (error) return console.log(error.message);
+        console.log(results)
+        message = results
+        bestResults.push(results)
+        console.log(bestResults)
+    })
+
+    db.all("SELECT * FROM mytable WHERE difficulty = 4 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 4)", function (error, results) {
+        if (error) return console.log(error.message);
+        console.log(results)
+        message = results
+        bestResults.push(results)
+        console.log(bestResults)
+    })
+
     db.all("SELECT * FROM mytable WHERE difficulty = 5 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 5)", function (error, results) {
         if (error) return console.log(error.message);
         console.log(results)
         message = results
+        bestResults.push(results)
+        console.log(bestResults)
     });
+
 }
 
 // function deleteData(name){

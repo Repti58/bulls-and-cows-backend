@@ -15,6 +15,11 @@ function insertData(data) {
     accessData();
 }
 
+// function insertData(data) {
+//     db.run('INSERT INTO mytable (id, date, difficulty, steps) VALUES(?,?,?,?)');
+//     console.log("Data inserted successfully...");
+//     accessData();
+// }
 // for (var i = 0; i < users.length; i++) {
 //     insertQuery.run(i, users[i]);
 // }
@@ -38,7 +43,7 @@ function accessData() {
 // }
 
 db.serialize(function () {
-    // db.run("CREATE TABLE IF NOT EXISTS mytable (date, steps)");
+    // db.run("CREATE TABLE IF NOT EXISTS mytable (_ID INTEGER PRIMARY KEY AUTOINCREMENT, date, difficulty, steps)");
     // insertData();
     accessData();
     // deleteData("James");

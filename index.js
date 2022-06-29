@@ -38,6 +38,10 @@ function accessData() {
 
 let bestResults = [];
 function accessDataBestResults() {
+   
+       
+    
+
 
     db.all("SELECT * FROM mytable WHERE difficulty = 3 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 3)", function (error, results) {
         if (error) return console.log(error.message);
@@ -60,7 +64,7 @@ function accessDataBestResults() {
         // console.log(results)
         message = results
         bestResults.push(results[0])
-        console.log(bestResults)
+        // console.log(bestResults)
     });
 
 }

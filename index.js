@@ -36,30 +36,30 @@ function accessData() {
 }
 
 
+let bestResults = [];
 function accessDataBestResults() {
-const bestResults = [];
 
     db.all("SELECT * FROM mytable WHERE difficulty = 3 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 3)", function (error, results) {
         if (error) return console.log(error.message);
-        console.log(results)
+        // console.log(results)
         message = results
-        bestResults.push(results)
-        console.log(bestResults)
+        bestResults.push(results[0])
+        // console.log(bestResults)
     })
 
     db.all("SELECT * FROM mytable WHERE difficulty = 4 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 4)", function (error, results) {
         if (error) return console.log(error.message);
-        console.log(results)
+        // console.log(results)
         message = results
-        bestResults.push(results)
-        console.log(bestResults)
+        bestResults.push(results[0])
+        // console.log(bestResults)
     })
 
     db.all("SELECT * FROM mytable WHERE difficulty = 5 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 5)", function (error, results) {
         if (error) return console.log(error.message);
-        console.log(results)
+        // console.log(results)
         message = results
-        bestResults.push(results)
+        bestResults.push(results[0])
         console.log(bestResults)
     });
 
@@ -76,7 +76,7 @@ db.serialize(function () {
     // db.run("CREATE TABLE IF NOT EXISTS mytable (_ID INTEGER PRIMARY KEY AUTOINCREMENT, date, difficulty, steps)");
     // insertData();
     accessData();
-    accessDataBestResults()
+    // accessDataBestResults()
     // deleteData("James");
 }); 
 
@@ -98,12 +98,16 @@ app.listen(PORT, () => {
 
 app.get('/api', (req, res) => {
     accessData();
+    console.log('game history request')
     res.json(message)
 })
 
 app.get('/api_best_results', (req, res) => {
+    
     accessDataBestResults();
-    res.json(message)
+    console.log('best results request')
+    res.json(bestResults)
+    bestResults = []
 })
 
 

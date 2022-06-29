@@ -15,6 +15,11 @@ function insertData(data) {
     accessData();
 }
 
+// function insertData(data) {
+//     db.run('INSERT INTO mytable (id, date, difficulty, steps) VALUES(?,?,?,?)');
+//     console.log("Data inserted successfully...");
+//     accessData();
+// }
 // for (var i = 0; i < users.length; i++) {
 //     insertQuery.run(i, users[i]);
 // }
@@ -30,6 +35,36 @@ function accessData() {
     }); 
 }
 
+
+function accessDataBestResults() {
+const bestResults = [];
+
+    db.all("SELECT * FROM mytable WHERE difficulty = 3 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 3)", function (error, results) {
+        if (error) return console.log(error.message);
+        console.log(results)
+        message = results
+        bestResults.push(results)
+        console.log(bestResults)
+    })
+
+    db.all("SELECT * FROM mytable WHERE difficulty = 4 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 4)", function (error, results) {
+        if (error) return console.log(error.message);
+        console.log(results)
+        message = results
+        bestResults.push(results)
+        console.log(bestResults)
+    })
+
+    db.all("SELECT * FROM mytable WHERE difficulty = 5 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 5)", function (error, results) {
+        if (error) return console.log(error.message);
+        console.log(results)
+        message = results
+        bestResults.push(results)
+        console.log(bestResults)
+    });
+
+}
+
 // function deleteData(name){
 //     db.run("DELETE FROM mytable WHERE name=?",name, err =>{
 //         if (err) return console.log(err.message);
@@ -38,9 +73,10 @@ function accessData() {
 // }
 
 db.serialize(function () {
-    // db.run("CREATE TABLE IF NOT EXISTS mytable (date, steps)");
+    // db.run("CREATE TABLE IF NOT EXISTS mytable (_ID INTEGER PRIMARY KEY AUTOINCREMENT, date, difficulty, steps)");
     // insertData();
     accessData();
+    accessDataBestResults()
     // deleteData("James");
 }); 
 
@@ -64,6 +100,13 @@ app.get('/api', (req, res) => {
     accessData();
     res.json(message)
 })
+
+app.get('/api_best_results', (req, res) => {
+    accessDataBestResults();
+    res.json(message)
+})
+
+
 
 app.post('/api', (req, res) => {
     data = req.body

@@ -38,34 +38,42 @@ function accessData() {
 
 let bestResults = [];
 function accessDataBestResults() {
-   
+   for(let i = 3; i < 6; i++) {
+    db.all(`SELECT * FROM mytable WHERE difficulty = ${i} AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = ${i})`, function (error, results) {
+        if (error) return console.log(error.message);
+        // console.log(results)
+        message = results
+        bestResults.push(results[0])
+        // console.log(bestResults)
+    })
+   }
        
     
 
 
-    db.all("SELECT * FROM mytable WHERE difficulty = 3 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 3)", function (error, results) {
-        if (error) return console.log(error.message);
-        // console.log(results)
-        message = results
-        bestResults.push(results[0])
-        // console.log(bestResults)
-    })
+    // db.all("SELECT * FROM mytable WHERE difficulty = 3 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 3)", function (error, results) {
+    //     if (error) return console.log(error.message);
+    //     // console.log(results)
+    //     message = results
+    //     bestResults.push(results[0])
+    //     // console.log(bestResults)
+    // })
 
-    db.all("SELECT * FROM mytable WHERE difficulty = 4 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 4)", function (error, results) {
-        if (error) return console.log(error.message);
-        // console.log(results)
-        message = results
-        bestResults.push(results[0])
-        // console.log(bestResults)
-    })
+    // db.all("SELECT * FROM mytable WHERE difficulty = 4 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 4)", function (error, results) {
+    //     if (error) return console.log(error.message);
+    //     // console.log(results)
+    //     message = results
+    //     bestResults.push(results[0])
+    //     // console.log(bestResults)
+    // })
 
-    db.all("SELECT * FROM mytable WHERE difficulty = 5 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 5)", function (error, results) {
-        if (error) return console.log(error.message);
-        // console.log(results)
-        message = results
-        bestResults.push(results[0])
-        // console.log(bestResults)
-    });
+    // db.all("SELECT * FROM mytable WHERE difficulty = 5 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 5)", function (error, results) {
+    //     if (error) return console.log(error.message);
+    //     // console.log(results)
+    //     message = results
+    //     bestResults.push(results[0])
+    //     // console.log(bestResults)
+    // });
 
 }
 
@@ -104,9 +112,10 @@ app.get('/api', (req, res) => {
     accessData();
     console.log('game history request')
     res.json(message)
+    message = ''
 })
 
-app.get('/api_best_results', (req, res) => {
+app.get('/best_results', (req, res) => {
     
     accessDataBestResults();
     console.log('best results request')
@@ -116,10 +125,11 @@ app.get('/api_best_results', (req, res) => {
 
 
 
-app.post('/api', (req, res) => {
-    data = req.body
-    console.log(data)
-    // res.send('Data inserted successfully...') 
-    res.status(201).json(data.number)
-    insertData(data)
-})
+// app.post('/api', (req, res) => {
+//     data = req.body
+//     console.log(data)
+//     // res.send('Data inserted successfully...') 
+//     res.status(201).json(data.number)
+//     insertData(data)
+
+// })

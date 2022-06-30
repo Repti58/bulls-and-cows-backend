@@ -44,8 +44,8 @@ function accessDataBestResults() {
         // console.log(results)
         message = results
         bestResults.push(results[0])
-        // console.log(bestResults)
     })
+    console.log(bestResults)
    }
        
     

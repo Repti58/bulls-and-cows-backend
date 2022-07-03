@@ -29,51 +29,44 @@ let message = ''
 function accessData() {
     db.all("SELECT * FROM mytable", function (error, results) {
         if (error) return console.log(err.message);
-        console.log(results)
+        // console.log(results)
+        console.log(`inside accessData results ${results}`)
         message = results
-
+        console.log(`inside accessData message ${message}`)
+        // message = ''
+        // console.log(`after clean ${message}`)
     }); 
 }
 
 
 let bestResults = [];
-function accessDataBestResults() {
-   for(let i = 3; i < 6; i++) {
-    db.all(`SELECT * FROM mytable WHERE difficulty = ${i} AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = ${i})`, function (error, results) {
-        if (error) return console.log(error.message);
-        // console.log(results)
-        message = results
-        bestResults.push(results[0])
-    })
-    console.log(bestResults)
-   }
-       
+function accessDataBestResults() {    
+// const best = []
     
+    db.all("SELECT * FROM mytable WHERE difficulty = 3 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 3)", function (error, results) {
+        if (error) return console.log(error.message);
+        console.log(results)  
+        bestResults.push(results[0])
+        
+    })
 
+    db.all("SELECT * FROM mytable WHERE difficulty = 4 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 4)", function (error, results) {
+        if (error) return console.log(error.message);
+        console.log(results)  
+        
+        bestResults.push(results[0])
+        
+    })
 
-    // db.all("SELECT * FROM mytable WHERE difficulty = 3 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 3)", function (error, results) {
-    //     if (error) return console.log(error.message);
-    //     // console.log(results)
-    //     message = results
-    //     bestResults.push(results[0])
-    //     // console.log(bestResults)
-    // })
-
-    // db.all("SELECT * FROM mytable WHERE difficulty = 4 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 4)", function (error, results) {
-    //     if (error) return console.log(error.message);
-    //     // console.log(results)
-    //     message = results
-    //     bestResults.push(results[0])
-    //     // console.log(bestResults)
-    // })
-
-    // db.all("SELECT * FROM mytable WHERE difficulty = 5 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 5)", function (error, results) {
-    //     if (error) return console.log(error.message);
-    //     // console.log(results)
-    //     message = results
-    //     bestResults.push(results[0])
-    //     // console.log(bestResults)
-    // });
+    db.all("SELECT * FROM mytable WHERE difficulty = 5 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 5)", function (error, results) {
+        if (error) return console.log(error.message);
+        console.log(results)  
+        
+        bestResults.push(results[0])
+        
+    });
+    // console.log(`all ${bestResults}`)
+    
 
 }
 
@@ -87,7 +80,9 @@ function accessDataBestResults() {
 db.serialize(function () {
     // db.run("CREATE TABLE IF NOT EXISTS mytable (_ID INTEGER PRIMARY KEY AUTOINCREMENT, date, difficulty, steps)");
     // insertData();
+    
     accessData();
+    accessDataBestResults()
     // accessDataBestResults()
     // deleteData("James");
 }); 
@@ -109,18 +104,29 @@ app.listen(PORT, () => {
 })
 
 app.get('/api', (req, res) => {
-    accessData();
     console.log('game history request')
+    console.log(`after request ${message}`)
+    accessData();
+    console.log(`after accesData ${message}`)
     res.json(message)
-    message = ''
+    // message = ''
+    // console.log(`after clean ${message}`)
 })
 
+
+// async function bestResultsAsync() {
+//     const bestRes = await accessDataBestResults()
+//     return bestRes
+// }
+
 app.get('/best_results', (req, res) => {
-    
-    accessDataBestResults();
     console.log('best results request')
+    accessDataBestResults();
     res.json(bestResults)
     bestResults = []
+    // let bestResults = accessDataBestResults();
+    // console.log(`from getApi ${bestResults}`)
+    // bestResults = []
 })
 
 

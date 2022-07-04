@@ -6,7 +6,6 @@ var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('db.db');
 
 
-
 const sql = 'INSERT INTO mytable (date, difficulty, steps) VALUES(?,?,?)';
 
 function insertData(data) {
@@ -15,41 +14,23 @@ function insertData(data) {
     accessData();
 }
 
-// function insertData(data) {
-//     db.run('INSERT INTO mytable (id, date, difficulty, steps) VALUES(?,?,?,?)');
-//     console.log("Data inserted successfully...");
-//     accessData();
-// }
-// for (var i = 0; i < users.length; i++) {
-//     insertQuery.run(i, users[i]);
-// }
-// insertQuery.finalize();
-// }
 let message = ''
 function accessData() {
     
     db.all("SELECT * FROM mytable", function (error, results) {
-        if (error) return console.log(err.message);
-        // console.log(results)
-        // console.log(`inside accessData results ${results}`)
-        message = results
-        // console.log(`inside accessData message ${message}`)
-        // message = ''
-        // console.log(`after clean ${message}`)
+        if (error) return console.log(err.message);     
+        message = results        
     }); 
 }
 
 
 let bestResults = [];
-function accessDataBestResults() {    
-// const best = []
+function accessDataBestResults() { 
     async function dataBaseRequest() {
         db.all("SELECT * FROM mytable WHERE difficulty = 3 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 3)", function (error, results) {
-            if (error) return console.log(error.message);
-            // console.log(results)
+            if (error) return console.log(error.message);            
             bestResults = [];  
-            bestResults.push(results[0])
-            // console.log(bestResults);
+            bestResults.push(results[0])            
         });
     }
 
@@ -68,50 +49,21 @@ function accessDataBestResults() {
                 
                 bestResults.push(results[0])
                 console.log(bestResults);
-            }))
-
-
-    // promise.then(db.all("SELECT * FROM mytable WHERE difficulty = 4 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 4)", function (error, results) {
-    //     if (error) return console.log(error.message);
-    //     console.log(results)  
-        
-    //     bestResults.push(results[0])
-        
-    // }));
-
-    // promise.then(db.all("SELECT * FROM mytable WHERE difficulty = 5 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 5)", function (error, results) {
-    //     if (error) return console.log(error.message);
-    //     console.log(results)  
-        
-    //     bestResults.push(results[0])
-        
-    // }));
-    // console.log(`all ${bestResults}`)
-    
+            }))   
 
 }
-
-// function deleteData(name){
-//     db.run("DELETE FROM mytable WHERE name=?",name, err =>{
-//         if (err) return console.log(err.message);
-//         console.log(`${name} deleted successfully...`);
-//     });
-// }
 
 db.serialize(() => {
     // db.run("CREATE TABLE IF NOT EXISTS mytable (_ID INTEGER PRIMARY KEY AUTOINCREMENT, date, difficulty, steps)");
     // insertData();
     
     accessData();
-    accessDataBestResults()
-    // accessDataBestResults()
-    // deleteData("James");
+    accessDataBestResults()      
 }); 
 
 // db.close();
 
 const PORT = process.env.port || 3002;
-// const message = accessData();
 const app = express();
 
 
@@ -129,33 +81,21 @@ app.get('/api', (req, res) => {
     console.log(`after request ${message}`)
     accessData();
     console.log(`after accesData ${message}`)
-    res.json(message)
-    // message = ''
-    // console.log(`after clean ${message}`)
+    res.json(message)   
 })
 
-
-// async function bestResultsAsync() {
-//     const bestRes = await accessDataBestResults()
-//     return bestRes
-// }
 
 app.get('/best_results', (req, res) => {
     console.log('best results request')
     accessDataBestResults();
     res.json(bestResults)
     bestResults = []
-    // let bestResults = accessDataBestResults();
-    // console.log(`from getApi ${bestResults}`)
-    // bestResults = []
+   
 })
-
-
 
 app.post('/api', (req, res) => {
     data = req.body
-    console.log(data)
-    // res.send('Data inserted successfully...') 
+    console.log(data)    
     res.status(201).json(data.number)
     insertData(data)
 

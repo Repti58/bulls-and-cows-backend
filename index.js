@@ -27,13 +27,14 @@ function insertData(data) {
 // }
 let message = ''
 function accessData() {
+    
     db.all("SELECT * FROM mytable", function (error, results) {
         if (error) return console.log(err.message);
         // console.log(results)
         // console.log(`inside accessData results ${results}`)
         message = results
         // console.log(`inside accessData message ${message}`)
-        message = ''
+        // message = ''
         // console.log(`after clean ${message}`)
     }); 
 }
@@ -151,11 +152,11 @@ app.get('/best_results', (req, res) => {
 
 
 
-// app.post('/api', (req, res) => {
-//     data = req.body
-//     console.log(data)
-//     // res.send('Data inserted successfully...') 
-//     res.status(201).json(data.number)
-//     insertData(data)
+app.post('/api', (req, res) => {
+    data = req.body
+    console.log(data)
+    // res.send('Data inserted successfully...') 
+    res.status(201).json(data.number)
+    insertData(data)
 
-// })
+})

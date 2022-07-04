@@ -30,10 +30,10 @@ function accessData() {
     db.all("SELECT * FROM mytable", function (error, results) {
         if (error) return console.log(err.message);
         // console.log(results)
-        console.log(`inside accessData results ${results}`)
+        // console.log(`inside accessData results ${results}`)
         message = results
-        console.log(`inside accessData message ${message}`)
-        // message = ''
+        // console.log(`inside accessData message ${message}`)
+        message = ''
         // console.log(`after clean ${message}`)
     }); 
 }
@@ -42,29 +42,49 @@ function accessData() {
 let bestResults = [];
 function accessDataBestResults() {    
 // const best = []
-    
-    db.all("SELECT * FROM mytable WHERE difficulty = 3 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 3)", function (error, results) {
-        if (error) return console.log(error.message);
-        console.log(results)  
-        bestResults.push(results[0])
-        
-    })
+    async function dataBaseRequest() {
+        db.all("SELECT * FROM mytable WHERE difficulty = 3 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 3)", function (error, results) {
+            if (error) return console.log(error.message);
+            // console.log(results)
+            bestResults = [];  
+            bestResults.push(results[0])
+            // console.log(bestResults);
+        });
+    }
 
-    db.all("SELECT * FROM mytable WHERE difficulty = 4 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 4)", function (error, results) {
-        if (error) return console.log(error.message);
-        console.log(results)  
-        
-        bestResults.push(results[0])
-        
-    })
+    dataBaseRequest().then(
+        db.all("SELECT * FROM mytable WHERE difficulty = 4 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 4)", function (error, results) {
+                if (error) return console.log(error.message);
+                // console.log(results)  
+                
+                bestResults.push(results[0])
+                console.log(bestResults);
+            })
+    ).then(
+        db.all("SELECT * FROM mytable WHERE difficulty = 5 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 5)", function (error, results) {
+                if (error) return console.log(error.message);
+                // console.log(results)  
+                
+                bestResults.push(results[0])
+                console.log(bestResults);
+            }))
 
-    db.all("SELECT * FROM mytable WHERE difficulty = 5 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 5)", function (error, results) {
-        if (error) return console.log(error.message);
-        console.log(results)  
+
+    // promise.then(db.all("SELECT * FROM mytable WHERE difficulty = 4 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 4)", function (error, results) {
+    //     if (error) return console.log(error.message);
+    //     console.log(results)  
         
-        bestResults.push(results[0])
+    //     bestResults.push(results[0])
         
-    });
+    // }));
+
+    // promise.then(db.all("SELECT * FROM mytable WHERE difficulty = 5 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 5)", function (error, results) {
+    //     if (error) return console.log(error.message);
+    //     console.log(results)  
+        
+    //     bestResults.push(results[0])
+        
+    // }));
     // console.log(`all ${bestResults}`)
     
 
@@ -77,7 +97,7 @@ function accessDataBestResults() {
 //     });
 // }
 
-db.serialize(function () {
+db.serialize(() => {
     // db.run("CREATE TABLE IF NOT EXISTS mytable (_ID INTEGER PRIMARY KEY AUTOINCREMENT, date, difficulty, steps)");
     // insertData();
     

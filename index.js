@@ -31,6 +31,7 @@ function accessDataBestResults() {
             if (error) return console.log(error.message);
             bestResults = [];
             bestResults.push(results[0])
+            console.log(bestResults);
         });
     }
 
@@ -63,7 +64,7 @@ db.serialize(() => {
 
 // db.close();
 
-const PORT = process.env.port || 3002;
+const PORT = process.env.port || 3002;  
 const app = express();
 
 
@@ -86,17 +87,17 @@ app.get('/api', (req, res) => {
 
 
 app.get('/best_results', (req, res) => {
-    console.log('best results request')
-    accessDataBestResults();
-    res.json(bestResults)
-    bestResults = []
+    console.log('best results request');
+    // accessDataBestResults();
+    res.json(bestResults);
+    // bestResults = [];
 
 })
 
 app.post('/api', (req, res) => {
-    data = req.body
-    console.log(data)
-    res.status(201).json(data.number)
-    insertData(data)
-
+    data = req.body;
+    console.log(data);
+    res.status(201).json(data.number);
+    insertData(data);
+    accessDataBestResults(); 
 })

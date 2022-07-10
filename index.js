@@ -25,33 +25,48 @@ function accessData() {
 
 
 let bestResults = [];
-function accessDataBestResults() {
-    async function dataBaseRequest() {
-        db.all("SELECT * FROM mytable WHERE difficulty = 3 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 3)", function (error, results) {
-            if (error) return console.log(error.message);
-            bestResults = [];
-            bestResults.push(results[0])
-            console.log(bestResults);
-        });
+
+async function dataBaseRequest1() {
+    db.all("SELECT * FROM mytable WHERE difficulty = 3 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 3)", function (error, results) {
+        if (error) return console.log(error.message);
+        // bestResults = [];
+        // console.log(bestResults);
+        console.log(results[0]);
+        return results[0];
+    });
+}
+
+async function dataBaseRequest2() {
+    let res = await (db.all("SELECT * FROM mytable WHERE difficulty = 4 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 4)", function (error, results) {
+        if (error) return console.log(error.message);
+        // console.log(results)  
+
+        // console.log(bestResults);
+        console.log(results[0]);
     }
+    )
+    )
+    return res
+}
+async function dataBaseRequest3() {
+    db.all("SELECT * FROM mytable WHERE difficulty = 5 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 5)", function (error, results) {
+        if (error) return console.log(error.message);
+        // console.log(results)  
 
-    dataBaseRequest().then(
-        db.all("SELECT * FROM mytable WHERE difficulty = 4 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 4)", function (error, results) {
-            if (error) return console.log(error.message);
-            // console.log(results)  
+        // console.log(bestResults);
+        console.log(results[0]);
 
-            bestResults.push(results[0])
-            console.log(bestResults);
-        })
-    ).then(
-        db.all("SELECT * FROM mytable WHERE difficulty = 5 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 5)", function (error, results) {
-            if (error) return console.log(error.message);
-            // console.log(results)  
-
-            bestResults.push(results[0])
-            console.log(bestResults);
-        }))
-
+        return results[0]
+    })
+}
+async function accessDataBestResults() {
+    let a = await dataBaseRequest1();
+    console.log(a);
+    bestResults.push(a)
+    let b = await dataBaseRequest2()
+    bestResults.push(b)
+    let c = await dataBaseRequest3()
+    bestResults.push(c)
 }
 
 db.serialize(() => {
@@ -64,7 +79,7 @@ db.serialize(() => {
 
 // db.close();
 
-const PORT = process.env.port || 3002;  
+const PORT = process.env.port || 3002;
 const app = express();
 
 
@@ -77,8 +92,8 @@ app.listen(PORT, () => {
     console.log(`Server starting on port ${PORT}`)
 })
 
-app.get('/api', (req, res) => {    
-    accessData();    
+app.get('/api', (req, res) => {
+    accessData();
     res.json(message)
 })
 
@@ -96,5 +111,5 @@ app.post('/api', (req, res) => {
     console.log(data);
     res.status(201).json(data.number);
     insertData(data);
-    accessDataBestResults(); 
+    accessDataBestResults();
 })

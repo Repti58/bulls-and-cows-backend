@@ -18,7 +18,7 @@ let message = ''
 function accessData() {
 
     db.all("SELECT * FROM mytable", function (error, results) {
-        if (error) return console.log(err.message);
+        if (error) return console.log(error.message);
         message = results
     });
 }
@@ -77,11 +77,8 @@ app.listen(PORT, () => {
     console.log(`Server starting on port ${PORT}`)
 })
 
-app.get('/api', (req, res) => {
-    console.log('game history request')
-    console.log(`after request ${message}`)
-    accessData();
-    console.log(`after accesData ${message}`)
+app.get('/api', (req, res) => {    
+    accessData();    
     res.json(message)
 })
 

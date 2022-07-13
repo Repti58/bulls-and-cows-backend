@@ -88,31 +88,39 @@ const accessDataBestResults5 = new Promise((resolve, reject) => {
     })
 })
 
-const accessDataBestResults = () => {
-    // bestResults = []
-    console.log(bestResults);
-    // const a = await accessDataBestResults3();
-    // bestResults.push(a)
-    accessDataBestResults3.then((data) => {
-        bestResults.push(data)
-        console.log(bestResults)
+// const accessDataBestResults = () => {
+//     // bestResults = []
+//     console.log(bestResults);
+   
+//     accessDataBestResults4.then((data) => {
+//         bestResults.push(data)
+//         console.log(bestResults)
         
-    }) 
-        .then(() => {accessDataBestResults4.then((data) => {         
-            bestResults.push(data)
-            console.log(bestResults)
-        })})
-        // const c = await accessDataBestResults5();
-        // bestResults.push(c)
-        
-        
-        .then(() => {accessDataBestResults5.then((data) => {
-            bestResults.push(data)
-            console.log(bestResults)
-        })})                 
+//     }) 
+//         .then(() => {
+//             return accessDataBestResults4.then((data) => {         
+//             bestResults.push(data)
+//             console.log(bestResults)
+//         })})
+
+//        .then(() => {
+//             return accessDataBestResults5.then((data) => {
+//             bestResults.push(data)
+//             console.log(bestResults)
+//         })})  
+                                               
+// }
+
+
+const accessDataBestResults = async () => {    
+
+    const data = await accessDataBestResults3;
+    bestResults.push(data);
+    const data_1 = await accessDataBestResults4;
+    bestResults.push(data_1);
+    const data_2 = await accessDataBestResults5;
+    bestResults.push(data_2);
 }
-
-
 
 
 db.serialize(() => {
@@ -146,8 +154,13 @@ app.get('/api', (req, res) => {
 
 app.get('/best_results', (req, res) => {
     console.log('best results request');
+    bestResults = []
     // accessDataBestResults();
-    res.json(bestResults);
+    const result = new Promise((resolve, reject) => {
+        accessDataBestResults()
+        resolve()
+    })
+    result.then(() => res.json(bestResults));
     // bestResults = [];
 
 })

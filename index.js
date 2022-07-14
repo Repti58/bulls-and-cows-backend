@@ -60,12 +60,12 @@ function accessData() {
 
 
 
-let bestResults = [];
+// let bestResults = [];
 
 const accessDataBestResults3 = new Promise((resolve, reject) => {
     db.all("SELECT * FROM mytable WHERE difficulty = 3 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 3)", function (error, results) {
         // if (error) return console.log(error.message);
-        let bestOf3 = results[0]
+        let bestOf3 = results
         resolve(bestOf3)
     })
 })
@@ -74,7 +74,7 @@ const accessDataBestResults3 = new Promise((resolve, reject) => {
 // async function accessDataBestResults4() {
 const accessDataBestResults4 = new Promise((resolve, reject) => {
     db.all("SELECT * FROM mytable WHERE difficulty = 4 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 4)", function (error, results) {
-        let bestOf4 = results[0]
+        let bestOf4 = results
         // console.log(results[0]);
         resolve(bestOf4)
     })
@@ -82,7 +82,7 @@ const accessDataBestResults4 = new Promise((resolve, reject) => {
 
 const accessDataBestResults5 = new Promise((resolve, reject) => {
     db.all("SELECT * FROM mytable WHERE difficulty = 5 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 5)", function (error, results) {
-        let bestOf5 = results[0]
+        let bestOf5 = results
         // console.log(results[0]);
         resolve(bestOf5)
     })
@@ -112,14 +112,16 @@ const accessDataBestResults5 = new Promise((resolve, reject) => {
 // }
 
 
-const accessDataBestResults = async () => {    
+const accessDataBestResults = async() => {    
 
     const data = await accessDataBestResults3;
-    bestResults.push(data);
+    // bestResults.push(data);
     const data_1 = await accessDataBestResults4;
-    bestResults.push(data_1);
+    // bestResults.push(data_1);
     const data_2 = await accessDataBestResults5;
-    bestResults.push(data_2);
+    const bestResults = [...data, ...data_1, ...data_2];
+    console.log(bestResults)
+    return bestResults
 }
 
 
@@ -154,13 +156,18 @@ app.get('/api', (req, res) => {
 
 app.get('/best_results', (req, res) => {
     console.log('best results request');
-    bestResults = []
+    // bestResults = []
     // accessDataBestResults();
-    const result = new Promise((resolve, reject) => {
-        accessDataBestResults()
-        resolve()
-    })
-    result.then(() => res.json(bestResults));
+    // const result = new Promise((resolve, reject) => {
+    //     accessDataBestResults()
+    //     resolve()
+    // })
+    const result = async() => {
+        const data = await accessDataBestResults()
+        console.log(data);
+        return data
+    }
+    res.json(result);
     // bestResults = [];
 
 })

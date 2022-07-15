@@ -65,12 +65,14 @@ return gameList
 
 // let bestResults = [];
 const dbRequest = async () => {
+    // console.log(dif);
 const accessDataBestResults3 = await new Promise((resolve, reject) => {
-    db.all("SELECT * FROM mytable WHERE difficulty = 3 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 3)", function (error, results) {
+    
+    db.all(`SELECT * FROM mytable WHERE difficulty = 3 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 3)`, function (error, results) {
         // reject(() => console.log(error.message));
-        let bestOf3 = results
-        console.log(bestOf3);
-        resolve(bestOf3)
+        let bestOfcurrent
+        results.length === 0 ? bestOfcurrent = [{steps: 'X'}] : bestOfcurrent = results                
+        resolve(bestOfcurrent)
     })
 })
 
@@ -78,19 +80,17 @@ const accessDataBestResults3 = await new Promise((resolve, reject) => {
 // async function accessDataBestResults4() {
 const accessDataBestResults4 = await new Promise((resolve, reject) => {
     db.all("SELECT * FROM mytable WHERE difficulty = 4 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 4)", function (error, results) {
-        let bestOf4 = results
-        // console.log(results[0]);
-        console.log(bestOf4);
-        resolve(bestOf4)
+        let bestOfcurrent
+        results.length === 0 ? bestOfcurrent = [{steps: 'X'}] : bestOfcurrent = results                
+        resolve(bestOfcurrent)
     })
 })
 
 const accessDataBestResults5 = await new Promise((resolve, reject) => {
     db.all("SELECT * FROM mytable WHERE difficulty = 5 AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = 5)", function (error, results) {
-        let bestOf5 = results
-        // console.log(results[0]);
-        console.log(bestOf5);
-        resolve(bestOf5)
+        let bestOfcurrent
+        results.length === 0 ? bestOfcurrent = [{steps: 'X'}] : bestOfcurrent = results                
+        resolve(bestOfcurrent)
     })
 })
 const newArr = [...accessDataBestResults3, ...accessDataBestResults4, ...accessDataBestResults5]

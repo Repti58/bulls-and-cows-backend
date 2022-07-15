@@ -31,31 +31,38 @@
 
 
 
-const accessDataBestResults = async () => {    
+// const accessDataBestResults = async () => {    
 
-    const data = await accessDataBestResults3;
-    bestResults.push(data);
-    const data_1 = await accessDataBestResults4;
-    bestResults.push(data_1);
-    const data_2 = await accessDataBestResults5;
-    bestResults.push(data_2);
+//     const data = await accessDataBestResults3;
+//     bestResults.push(data);
+//     const data_1 = await accessDataBestResults4;
+//     bestResults.push(data_1);
+//     const data_2 = await accessDataBestResults5;
+//     bestResults.push(data_2);
+// }
+
+
+// const accessDataBestResults2 = () => {
+
+//     return accessDataBestResults3.then((data) => {
+//         bestResults.push(data)
+//     })
+//         .then(() => {
+//             return accessDataBestResults4.then((data) => {
+//                 bestResults.push(data)
+//             })
+//         })
+
+//         .then(() => {
+//             return accessDataBestResults5.then((data) => {
+//                 bestResults.push(data)
+//             })
+//         })
+// }
+
+const foo = () => {
+const boo = []
+if (boo === []) console.log('пустой массив');
 }
 
-
-const accessDataBestResults2 = () => {
-
-    return accessDataBestResults3.then((data) => {
-        bestResults.push(data)
-    })
-        .then(() => {
-            return accessDataBestResults4.then((data) => {
-                bestResults.push(data)
-            })
-        })
-
-        .then(() => {
-            return accessDataBestResults5.then((data) => {
-                bestResults.push(data)
-            })
-        })
-}
+foo()

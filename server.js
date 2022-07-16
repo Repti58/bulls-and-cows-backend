@@ -19,7 +19,7 @@ const getGameHistory = async () => {
             resolve(results)
         });
     })
-    // console.log(gamesList);
+    console.log(gamesList);
     return gamesList
 }
 
@@ -39,9 +39,9 @@ const getBestResults = async () => {
     return (bestResults)
 }
 
-// db.serialize(() => {
-//     getGameHistory();    
-// });
+db.serialize(() => {
+    getGameHistory();    
+});
 
 // db.close();
 
@@ -68,7 +68,7 @@ app.get('/best_results', async (req, res) => {
 })
 
 app.post('/api', (req, res) => {
-    data = req.body;
+    const data = req.body;
     console.log(data);
     res.status(201).json(data.number);
     insertData(data);

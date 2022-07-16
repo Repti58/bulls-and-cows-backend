@@ -41,7 +41,7 @@ const getBestResults = async () => {
 
 db.serialize(() => {
     getGameHistory();    
-});
+}); 
 
 // db.close();
 
@@ -73,3 +73,8 @@ app.post('/api', (req, res) => {
     res.status(201).json(data.number);
     insertData(data);
 })
+
+//this code must me ON to deploy to Glitch
+// const listener = app.listen(process.env.PORT, function() {
+//     console.log('Your app is listening on port ' + listener.address().port);
+//   });

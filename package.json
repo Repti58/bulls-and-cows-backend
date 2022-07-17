@@ -17,7 +17,6 @@
     "sqlite3": "^5.0.8"
   },
   "devDependencies": {
-    "@architect/sandbox": "^5.3.0",
     "nodemon": "^2.0.19"
   }
 }

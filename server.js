@@ -75,7 +75,7 @@ app.post('/api', (req, res) => {
     insertData(data);
 })
 
-this code must me ON to deploy to Glitch
+// this code must me ON to deploy to Glitch
 const listener = app.listen(process.env.PORT, function() {
     console.log('Your app is listening on port ' + listener.address().port);
   });

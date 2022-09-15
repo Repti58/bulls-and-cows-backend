@@ -61,6 +61,7 @@ app.get('/api', async (req, res) => {
     res.json(data)
 })
 
+app.get('/', async(req, res) => res.json('no request data'))
 
 app.get('/best_results', async (req, res) => {
     console.log('best results request');

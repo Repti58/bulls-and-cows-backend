@@ -45,15 +45,15 @@ db.serialize(() => {
 
 // db.close();
 
-// const PORT = process.env.port || 3002;
+const PORT = process.env.port || 3002;
 const app = express();
 
 app.use(cors());
 app.use(express.json())
 
-// app.listen(PORT, () => {
-//     console.log(`Server starting on port ${PORT}`)
-// })
+app.listen(PORT, () => {
+    console.log(`Server starting on port ${PORT}`)
+})
 
 app.get('/api', async (req, res) => {
     console.log('Game history request');
@@ -77,6 +77,6 @@ app.post('/api', (req, res) => {
 })
 
 // this code must me ON to deploy to Glitch
-const listener = app.listen(process.env.PORT, function() {
-    console.log('Your app is listening on port ' + listener.address().port);
-  });
+// const listener = app.listen(process.env.PORT, function() {
+//     console.log('Your app is listening on port ' + listener.address().port);
+//   });

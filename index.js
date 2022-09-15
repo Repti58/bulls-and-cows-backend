@@ -18,7 +18,7 @@ const getGameHistory = async () => {
       resolve(results);
     });
   });
-  console.log(gamesList);
+//   console.log(gamesList);
   return gamesList;
 };
 

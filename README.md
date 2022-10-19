@@ -17,14 +17,7 @@ Bulls and Cows (backend)
 https://repti85.github.io/bulls-and-cows/
 
 ## Implementation:
-The application sends a request to the API of the Central Bank of the Russian Federation for the required date and the previous one and receives data in xml format, which it processes and converts into an array with objects, including:
-- letter code,
-- amount,
-- Name,
-- price on the requested date,
-- previous date price
+This application is used to interact with the SQLite3 database, which stores the history of games and to calculate the best scores for each level of difficulty of the game.
 
 ## Features:
-**Language: JavaScript**
-
-**Modules used: ExpressJS, Needle, Cors, XML-JS**
+- **Technologies used: JavaScript, ExpressJS, SQLite3 DB**

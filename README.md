@@ -4,17 +4,17 @@ Bulls and Cows (backend)
 
 <h3>This web application is deployed on "Glitch" and uses the frontend deployed on "Github Pages"</h3>
 
-  **Github (frontend):**  https://github.com/repti85/bulls-and-cows.git 
+  **Github (frontend):**  https://github.com/repti58/bulls-and-cows.git 
 <br><br>
 
-<a href="https://repti85.github.io/bulls-and-cows">
+<a href="https://repti58.github.io/bulls-and-cows">
   <img src="img/screenshot1.png" width="300"> 
   </a>
- <a href="https://repti85.github.io/bulls-and-cows/#/gamehistory">
+ <a href="https://repti58.github.io/bulls-and-cows/#/gamehistory">
   <img src="img/screenshot2.png" width="300"> 
 </a>
 
-https://repti85.github.io/bulls-and-cows/
+https://repti58.github.io/bulls-and-cows/
 
 ## Implementation:
 This application is used to interact with the SQLite3 database, which stores the history of games and to calculate the best scores for each level of difficulty of the game.

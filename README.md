@@ -20,4 +20,4 @@ https://repti85.github.io/bulls-and-cows/
 This application is used to interact with the SQLite3 database, which stores the history of games and to calculate the best scores for each level of difficulty of the game.
 
 ## Features:
-- **Technologies used: JavaScript, ExpressJS, SQLite3 DB**
+- **Technologies used: NodeJS, ExpressJS, SQLite3 DB**

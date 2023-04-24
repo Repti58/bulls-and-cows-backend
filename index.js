@@ -3,17 +3,17 @@ const cors = require("cors");
 const dotenv = require("dotenv")
 
 
-var sqlite3 = require("sqlite3").verbose();
-var db = new sqlite3.Database("db.db");
+// var sqlite3 = require("sqlite3").verbose();
+// var db = new sqlite3.Database("db.db");
 dotenv.config()
 
 
 const sql = "INSERT INTO mytable (date, difficulty, steps) VALUES(?,?,?)";
 
-function insertData(data) {
-  db.run(sql, [data.date, data.difficulty, data.number]);
-  console.log("Data inserted successfully...");
-}
+// function insertData(data) {
+//   db.run(sql, [data.date, data.difficulty, data.number]);
+//   console.log("Data inserted successfully...");
+// }
 
 //MongoDB<<<
 const { MongoClient, ServerApiVersion } = require("mongodb");
@@ -109,9 +109,11 @@ const getBestResults = async () => {
 //   return bestResults;
 // };
 
-db.serialize(() => {
-  getGameHistory();
-});
+
+getGameHistory();
+// db.serialize(() => {
+//   getGameHistory();
+// });
 
 // db.close();
 

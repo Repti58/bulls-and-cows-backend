@@ -110,7 +110,6 @@ const getBestResults = async () => {
 // };
 
 
-getGameHistory();
 // db.serialize(() => {
 //   getGameHistory();
 // });

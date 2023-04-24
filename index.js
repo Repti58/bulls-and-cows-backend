@@ -1,8 +1,12 @@
 const express = require("express");
 const cors = require("cors");
+const dotenv = require("dotenv")
+
 
 var sqlite3 = require("sqlite3").verbose();
 var db = new sqlite3.Database("db.db");
+dotenv.config()
+
 
 const sql = "INSERT INTO mytable (date, difficulty, steps) VALUES(?,?,?)";
 
@@ -14,7 +18,7 @@ function insertData(data) {
 //MongoDB<<<
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const uri =
-  "mongodb+srv://repti58:<password>@cluster0.ciiln0y.mongodb.net/?retryWrites=true&w=majority";
+  `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.ciiln0y.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,

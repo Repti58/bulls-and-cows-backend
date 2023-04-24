@@ -14,7 +14,7 @@ function insertData(data) {
 //MongoDB<<<
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const uri =
-  "mongodb+srv://repti58:10133033@cluster0.ciiln0y.mongodb.net/?retryWrites=true&w=majority";
+  "mongodb+srv://repti58:<password>@cluster0.ciiln0y.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,

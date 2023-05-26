@@ -17,22 +17,27 @@ const client = new MongoClient(uri, {
 const db = client.db("History");
 const collection = db.collection("Games");
 
-const getGameHistory = async () => {
+const connectDataBase = async() => {
   try {
-    await client.connect();
+    await client.connect()
+    console.log("Успешное соединение с БД");
+  } catch (error) {
+    console.error("Ошибка соединения с БД", error);
+  }
+}
+
+const getGameHistory = async() => {
+  try {
     const gamesList = await collection.find({}).toArray();
     console.log("История игр получена из БД");
     return gamesList;
   } catch (error) {
     console.error("Ошибка получения истории игр из БД", error);
-  } finally {
-    await client.close();
-  }
+  } 
 };
 
 const getBestResults = async () => {
   try {
-    await client.connect();
     const bestResults = await collection
       .aggregate([
         {
@@ -60,30 +65,25 @@ const getBestResults = async () => {
     return bestResults;
   } catch (error) {
     console.error("Ошибка получения лучших результатов из БД", error);
-  } finally {
-    await client.close();
   }
 };
 
 const insertData = async (data) => {
-  await client.connect();
-  const db = client.db("History");
-  const collection = db.collection("Games");
   try {
     await collection.insertOne(data);
     console.log("Данные успешно добавлены в БД");
   } catch (error) {
     console.error("Ошибка добавления данных в БД", error);
-  } finally {
-    await client.close();
-  }
+  } 
 };
 
-const PORT = process.env.port || 3005;
+const PORT = process.env.port || 3005; 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+connectDataBase()
 
 app.listen(PORT, () => {
   console.log(`Server starting on port ${PORT}`);
@@ -91,7 +91,7 @@ app.listen(PORT, () => {
 
 app.get("/api", async (req, res) => {
   console.log("Game history request");
-  const data = await getGameHistory();
+  const data = await getGameHistory(); 
   res.json(data);
 });
 
@@ -107,7 +107,7 @@ app.get("/best_results", async (req, res) => {
 
 app.post("/api", (req, res) => {
   const data = req.body;
-  console.log(data);
-  res.status(201).json(data.number);
+  console.log("Post data", data);
   insertData(data);
+  res.status(201).json(data.number);
 });

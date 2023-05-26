@@ -2,20 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv")
 
-
-// var sqlite3 = require("sqlite3").verbose();
-// var db = new sqlite3.Database("db.db");
 dotenv.config()
 
-
-const sql = "INSERT INTO mytable (date, difficulty, steps) VALUES(?,?,?)";
-
-// function insertData(data) {
-//   db.run(sql, [data.date, data.difficulty, data.number]);
-//   console.log("Data inserted successfully...");
-// }
-
-//MongoDB<<<
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const uri =
   `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.ciiln0y.mongodb.net/?retryWrites=true&w=majority`;
@@ -66,7 +54,7 @@ const getBestResults = async () => {
     for (let i = 3; i < 6; i++) {
       let find = games.find({ difficulty: i }).sort({ steps: 1 }).limit(1);
       find = await find.toArray();
-      console.log("Результат выборки", find);
+      // console.log("Результат выборки", find);
       bestResults.push(find[0]);
     }
   } finally {
@@ -75,46 +63,7 @@ const getBestResults = async () => {
   }
   return bestResults;
 };
-//MongoDB>>>
 
-// const getGameHistory = async () => {
-//   const gamesList = await new Promise((resolve, reject) => {
-//     db.all("SELECT * FROM mytable", function (error, results) {
-//       if (error) return console.log(error.message);
-//       resolve(results);
-//     });
-//   });
-// //   console.log(gamesList);
-
-//   return gamesList;
-// };
-
-// const getBestResults = async () => {
-//   const bestResults = [];
-//   for (let i = 3; i < 6; i++) {
-//     await new Promise((resolve, reject) => {
-//       db.all(
-//         `SELECT * FROM mytable WHERE difficulty = ${i} AND steps = (SELECT MIN(steps) FROM mytable WHERE difficulty = ${i})`,
-//         function (error, results) {
-//           let bestOfCurrentDiff;
-//           results.length === 0
-//             ? (bestOfCurrentDiff = [{ steps: "X" }])
-//             : (bestOfCurrentDiff = results);
-//           resolve(bestResults.push(bestOfCurrentDiff[0]));
-//         }
-//       );
-//     });
-//   }
-//   console.log(bestResults);
-//   return bestResults;
-// };
-
-
-// db.serialize(() => {
-//   getGameHistory();
-// });
-
-// db.close();
 
 const PORT = process.env.port || 3005;
 const app = express();
@@ -149,7 +98,3 @@ app.post("/api", (req, res) => {
   insertData(data);
 });
 
-// this code must me ON to deploy to Glitch
-// const listener = app.listen(process.env.PORT, function() {
-//     console.log('Your app is listening on port ' + listener.address().port);
-//   });

@@ -1,12 +1,11 @@
 const express = require("express");
 const cors = require("cors");
-const dotenv = require("dotenv")
+const dotenv = require("dotenv");
 
-dotenv.config()
+dotenv.config();
 
 const { MongoClient, ServerApiVersion } = require("mongodb");
-const uri =
-  `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.ciiln0y.mongodb.net/?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.ciiln0y.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -15,55 +14,71 @@ const client = new MongoClient(uri, {
   },
 });
 
+const db = client.db("History");
+const collection = db.collection("Games");
+
 const getGameHistory = async () => {
-  let gamesList;
   try {
-    // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log(
-      "Pinged your deployment. You successfully connected to MongoDB!"
-    );
-
-    const games = client.db("History").collection("Games");
-    const cursor = games.find();
-    gamesList = await cursor.toArray();
-
-    // console.log(gamesList);
+    const gamesList = await collection.find({}).toArray();
+    console.log("История игр получена из БД");
+    return gamesList;
+  } catch (error) {
+    console.error("Ошибка получения истории игр из БД", error);
   } finally {
-    // Ensures that the client will close when you finish/error
     await client.close();
   }
-
-  return gamesList;
 };
 
 const getBestResults = async () => {
-  const bestResults = [];
   try {
-    // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log(
-      "Pinged your deployment. You successfully connected to MongoDB!"
-    );
+    const bestResults = await collection
+      .aggregate([
+        {
+          $group: {
+            _id: "$difficulty",
+            minSteps: { $min: "$steps" },
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+            difficulty: "$_id",
+            steps: "$minSteps",
+          },
+        },
+        {
+          $sort: {
+            difficulty: 1,
+          },
+        },
+      ])
+      .toArray();
 
-    const games = client.db("History").collection("Games");
-    for (let i = 3; i < 6; i++) {
-      let find = games.find({ difficulty: i }).sort({ steps: 1 }).limit(1);
-      find = await find.toArray();
-      // console.log("Результат выборки", find);
-      bestResults.push(find[0]);
-    }
+    console.log("Результат выборки", bestResults);
+    return bestResults;
+  } catch (error) {
+    console.error("Ошибка получения лучших результатов из БД", error);
   } finally {
     // Ensures that the client will close when you finish/error
     await client.close();
   }
-  return bestResults;
 };
 
+const insertData = async (data) => {
+  await client.connect();
+  const db = client.db("History");
+  const collection = db.collection("Games");
+  try {
+    await collection.insertOne(data);
+    console.log("Данные успешно добавлены в БД");
+  } catch (error) {
+    console.error("Ошибка добавления данных в БД", error);
+  } finally {
+    await client.close();
+  }
+};
 
 const PORT = process.env.port || 3005;
 const app = express();
@@ -97,4 +112,3 @@ app.post("/api", (req, res) => {
   res.status(201).json(data.number);
   insertData(data);
 });
-

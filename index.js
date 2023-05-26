@@ -61,7 +61,6 @@ const getBestResults = async () => {
   } catch (error) {
     console.error("Ошибка получения лучших результатов из БД", error);
   } finally {
-    // Ensures that the client will close when you finish/error
     await client.close();
   }
 };

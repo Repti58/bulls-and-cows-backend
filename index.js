@@ -17,14 +17,14 @@ const client = new MongoClient(uri, {
 const db = client.db("History");
 const collection = db.collection("Games");
 
-// const connectDataBase = async() => {
-//   try {
-//     await client.connect()
-//     console.log("Успешное соединение с БД");
-//   } catch (error) {
-//     console.error("Ошибка соединения с БД", error);
-//   }
-// }
+const connectDataBase = async() => {
+  try {
+    await client.connect()
+    console.log("Успешное соединение с БД");
+  } catch (error) {
+    console.error("Ошибка соединения с БД", error);
+  }
+}
 
 const getGameHistory = async() => {
   try {
@@ -73,8 +73,9 @@ const getBestResults = async () => {
 const insertData = async (data) => {
   try {
     await client.connect()
-    await collection.insertOne(data);
-    console.log("Данные успешно добавлены в БД");
+    const result = await collection.insertOne(data);
+    return result.insertedId;
+    // console.log("Данные успешно добавлены в БД", insertedId);
   } catch (error) {
     console.error("Ошибка добавления данных в БД", error); 
   } 
@@ -85,8 +86,6 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-
-// connectDataBase()
 
 app.listen(PORT, () => {
   console.log(`Server starting on port ${PORT}`);
@@ -99,6 +98,7 @@ app.get("/api", async (req, res) => {
 });
 
 app.get("/", async (req, res) => {
+  connectDataBase()
   res.json("no request data");
 });
 
@@ -108,9 +108,10 @@ app.get("/best_results", async (req, res) => {
   res.json(results);
 });
 
-app.post("/api", (req, res) => {
+app.post("/api", async (req, res) => {
   const data = req.body;
   console.log("Post data", data);
-  insertData(data);
-  res.status(201).json(data.number);
+  const result = await insertData(data);
+  console.log("Данные успешно добавлены в БД", result);
+  res.status(201).json(`insertedId: ${result}`);
 });

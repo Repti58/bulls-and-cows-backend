@@ -17,17 +17,18 @@ const client = new MongoClient(uri, {
 const db = client.db("History");
 const collection = db.collection("Games");
 
-const connectDataBase = async() => {
-  try {
-    await client.connect()
-    console.log("Успешное соединение с БД");
-  } catch (error) {
-    console.error("Ошибка соединения с БД", error);
-  }
-}
+// const connectDataBase = async() => {
+//   try {
+//     await client.connect()
+//     console.log("Успешное соединение с БД");
+//   } catch (error) {
+//     console.error("Ошибка соединения с БД", error);
+//   }
+// }
 
 const getGameHistory = async() => {
   try {
+    await client.connect()
     const gamesList = await collection.find({}).toArray();
     console.log("История игр получена из БД");
     return gamesList;
@@ -38,6 +39,7 @@ const getGameHistory = async() => {
 
 const getBestResults = async () => {
   try {
+    await client.connect()
     const bestResults = await collection
       .aggregate([
         {
@@ -70,10 +72,11 @@ const getBestResults = async () => {
 
 const insertData = async (data) => {
   try {
+    await client.connect()
     await collection.insertOne(data);
     console.log("Данные успешно добавлены в БД");
   } catch (error) {
-    console.error("Ошибка добавления данных в БД", error);
+    console.error("Ошибка добавления данных в БД", error); 
   } 
 };
 
@@ -83,7 +86,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-connectDataBase()
+// connectDataBase()
 
 app.listen(PORT, () => {
   console.log(`Server starting on port ${PORT}`);

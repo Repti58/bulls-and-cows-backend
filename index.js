@@ -4,13 +4,13 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
-const DB_PROTO = process.env.DB_PROTO
-const DB_USERNAME = process.env.DB_USERNAME
-const DB_PASSWORD = process.env.DB_PASSWORD
-const DB_HOST = process.env.DB_HOST
+// const DB_PROTO = process.env.DB_PROTO
+// const DB_USERNAME = process.env.DB_USERNAME
+// const DB_PASSWORD = process.env.DB_PASSWORD
+// const DB_HOST = process.env.DB_HOST
 
 const { MongoClient, ServerApiVersion } = require("mongodb");
-const uri = `${DB_PROTO}://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}`;
+const uri = `${process.env.DB_PROTO}://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}`;
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
